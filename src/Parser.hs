@@ -4,14 +4,14 @@ import Control.Applicative ((<|>))
 import Control.Monad.Combinators.Expr (Operator (..), makeExprParser)
 import Data
 import Data.Void (Void)
-import Text.Megaparsec ((<?>), Parsec, between, empty, errorBundlePretty, label, many, runParser)
+import Text.Megaparsec ((<?>), Parsec, between, empty, eof, errorBundlePretty, label, many, runParser)
 import Text.Megaparsec.Char (alphaNumChar, letterChar, space1)
 import qualified Text.Megaparsec.Char.Lexer as L
 
 type Parser = Parsec Void String
 
 parseExpr :: String -> Either String Expr
-parseExpr = mapLeft errorBundlePretty . runParser expr ""
+parseExpr = mapLeft errorBundlePretty . runParser (expr <* eof) ""
   where
     mapLeft _ (Right x) = Right x
     mapLeft f (Left x) = Left $ f x

@@ -4,4 +4,4 @@ build/
 *~
 
 terraform/.terraform/plugins/linux_amd64/terraform-provider*
-*.tfstate
+*.tfstate*

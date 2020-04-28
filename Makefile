@@ -5,3 +5,6 @@ all:
 	@stack build --docker
 	@cp `stack --docker path --local-install-root`/bin/bootstrap build
 	@cd build && zip function.zip bootstrap && rm bootstrap && cd ..
+
+deploy:
+	@cd terraform && terraform apply
