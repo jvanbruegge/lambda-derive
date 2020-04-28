@@ -2,6 +2,10 @@ output "base_url" {
     value = aws_api_gateway_deployment.api_deployment.invoke_url
 }
 
+variable "telegram_bot_token" {
+    type = string
+}
+
 provider "aws" {
     region = "eu-central-1"
 }
@@ -103,6 +107,12 @@ resource "aws_lambda_function" "derivative_lambda" {
     role = aws_iam_role.lambda_role.arn
     runtime = "provided"
     source_code_hash = filebase64sha256("../build/function.zip")
+
+    environment {
+        variables = {
+            TELEGRAM_BOT_TOKEN = var.telegram_bot_token
+        }
+    }
 }
 
 resource "aws_iam_role" "lambda_role" {

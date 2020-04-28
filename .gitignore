@@ -3,5 +3,6 @@ lambda-derive.cabal
 build/
 *~
 
+terraform/vars.tfvars
 terraform/.terraform/plugins/linux_amd64/terraform-provider*
 *.tfstate*

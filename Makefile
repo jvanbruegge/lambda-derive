@@ -7,4 +7,4 @@ all:
 	@cd build && zip function.zip bootstrap && rm bootstrap && cd ..
 
 deploy:
-	@cd terraform && terraform apply
+	@cd terraform && terraform apply -var-file="vars.tfvars"
