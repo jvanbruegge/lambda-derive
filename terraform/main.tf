@@ -1,3 +1,7 @@
+output "base_url" {
+    value = aws_api_gateway_deployment.api_deployment.invoke_url
+}
+
 provider "aws" {
     region = "eu-central-1"
 }
@@ -72,6 +76,15 @@ resource "aws_api_gateway_integration_response" "options_integration_response" {
         "method.response.header.Access-Control-Allow-Origin" = "'*'"
     }
     depends_on = [aws_api_gateway_method_response.options_method_response]
+}
+
+resource "aws_api_gateway_deployment" "api_deployment" {
+    rest_api_id = aws_api_gateway_rest_api.api.id
+    stage_name = "dev"
+    depends_on = [
+        aws_api_gateway_integration.derivative_lambda_integration,
+        aws_api_gateway_integration.options_integration
+    ]
 }
 
 # Lambda
