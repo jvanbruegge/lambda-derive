@@ -1,0 +1,4 @@
+.stack-work/
+lambda-derive.cabal
+build/
+*~
