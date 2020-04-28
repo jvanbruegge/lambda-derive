@@ -35,9 +35,11 @@ executables:
             - lambda-derive
 
 default-extensions:
-    - TemplateHaskell
-    - RecordWildCards
-    - OverloadedLists
-    - OverloadedStrings
+    - DeriveAnyClass
     - DeriveGeneric
     - DerivingStrategies
+    - DuplicateRecordFields
+    - NamedFieldPuns
+    - OverloadedLists
+    - OverloadedStrings
+    - TemplateHaskell

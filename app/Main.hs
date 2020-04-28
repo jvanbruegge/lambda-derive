@@ -1,7 +1,6 @@
 module Main where
 
 import Aws.Lambda
-
-import qualified Lib
+import qualified Lambda
 
 generateLambdaDispatcher
