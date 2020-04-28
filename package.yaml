@@ -1,12 +1,12 @@
 name: lambda-derive
 version: 0.1.0
-github: "githubuser/lambda-derive"
-license: BSD3
-author: "Author name here"
-maintainer: "example@example.com"
-copyright: "2020 Author name here"
+github: "jvanbruegge/lambda-derive"
+license: MIT
+author: "Jan van Brügge"
+maintainer: "jan.van.brugge@futurice.com"
+copyright: "2020 Jan van Brügge"
 
-description: Please see the README on GitHub at <https://github.com/githubuser/lambda-derive#readme>
+description: Please see the README on GitHub at <https://github.com/jvanbruegge/lambda-derive#readme>
 
 dependencies:
     - base >= 4.7 && < 5
