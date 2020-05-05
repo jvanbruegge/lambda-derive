@@ -8,3 +8,6 @@ all:
 
 deploy:
 	@cd terraform && terraform apply -var-file="vars.tfvars"
+
+destroy:
+	@cd terraform && terraform destroy -var-file="vars.tfvars"

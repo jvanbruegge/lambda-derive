@@ -14,7 +14,11 @@ dependencies:
     - aeson
     - megaparsec
     - parser-combinators
+    - text
+    - bytestring
     - telegram-api
+    - http-client
+    - http-client-tls
 
 library:
     source-dirs: src

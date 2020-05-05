@@ -46,7 +46,7 @@ packages:
 #
 allow-newer: true
 extra-deps:
-    - aws-lambda-haskell-runtime-2.0.1
+    - aws-lambda-haskell-runtime-2.0.2
     - git: https://github.com/klappvisor/haskell-telegram-api.git
       commit: abbfd76c40f2783c113b660184a03cc94d58e751
 # Override default flag values for local packages and extra-deps
