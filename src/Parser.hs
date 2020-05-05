@@ -24,6 +24,8 @@ operatorTable =
   [ [ pPrefix "-" negation,
       pPrefix "+" id
     ],
+    [ pBinary "^" power
+    ],
     [ pBinary "*" mult,
       pBinary "/" division
     ],
@@ -56,8 +58,8 @@ pParens = fmap parens . between (symbol "(") (symbol ")")
 lexeme :: Parser a -> Parser a
 lexeme = L.lexeme sc
 
-number :: Parser Int
-number = L.signed (pure ()) $ lexeme L.decimal
+number :: Parser Rational
+number = fromInteger <$> (L.signed (pure ()) $ lexeme L.decimal)
 
 symbol :: String -> Parser String
 symbol = L.symbol sc

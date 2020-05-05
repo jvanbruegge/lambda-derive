@@ -51,3 +51,4 @@ default-extensions:
     - TemplateHaskell
     - BlockArguments
     - LambdaCase
+    - FlexibleInstances

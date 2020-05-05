@@ -1,13 +1,14 @@
 module Lambda where
 
 import Aws.Lambda (Context)
+import Data (printExpr)
 import Data.Aeson ((.=), FromJSON, ToJSON, Value, eitherDecode, object)
 import Data.ByteString.Lazy (fromStrict)
 import Data.Maybe (fromMaybe)
 import Data.Text (pack, unpack)
 import Data.Text.Encoding (encodeUtf8)
 import GHC.Generics (Generic)
-import Lib (runParenthesizer)
+import Lib (parenthesize, run)
 import Network.HTTP.Client (Manager, newManager)
 import Network.HTTP.Client.TLS (tlsManagerSettings)
 import System.Environment (getEnv)
@@ -39,13 +40,13 @@ handler event context = do
   handler' token manager event context
 
 handler' :: Token -> Manager -> Event -> Context -> IO (Either String Response)
-handler' token@(Token s) manager MkEvent {body, path, httpMethod} context
+handler' token@(Token t) manager MkEvent {body, path, httpMethod} _
   | path == "/derive",
     Just expr <- body,
-    httpMethod == "POST" = pure $ case runParenthesizer expr of
-    Right s -> Right MkResponse {statusCode = 200, body = s, headers = object []}
+    httpMethod == "POST" = pure $ case run parenthesize expr of
+    Right s -> Right MkResponse {statusCode = 200, body = printExpr s, headers = object []}
     Left e -> Right MkResponse {statusCode = 200, body = e, headers = object []}
-  | path == "/" <> unpack s = putStrLn "Got message from telegram"
+  | path == "/" <> unpack t = putStrLn "Got message from telegram"
     *> case (eitherDecode . fromStrict . encodeUtf8 . pack $ fromMaybe "" body) of
       Left err -> pure $ Right MkResponse {statusCode = 400, body = err, headers = object []}
       Right update -> do

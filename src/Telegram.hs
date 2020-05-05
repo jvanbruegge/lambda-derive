@@ -1,9 +1,11 @@
 module Telegram (handleUpdate) where
 
 import Control.Monad.IO.Class (liftIO)
+import Data (printExpr)
+import Data.Char (isLetter)
 import Data.Maybe (fromMaybe)
 import Data.Text (Text, isPrefixOf, pack, unpack)
-import Lib (runParenthesizer)
+import Lib (parenthesize, run, simplify)
 import Web.Telegram.API.Bot (ChatId (..), Message (..), ParseMode (..), SendMessageRequest (..), TelegramClient, Update (..), User (..), chat_id, sendMessageM, sendMessageRequest)
 
 sendMarkdown :: ChatId -> Text -> SendMessageRequest
@@ -27,9 +29,13 @@ handleUpdate Update {message = Just m} = do
       liftIO $ putStrLn $ "Sent geeting: " <> show rm
       pure ()
     else do
-      let answer = case runParenthesizer (unpack content) of
+      let answer = case run simplify (unpack content) of
             Left err -> sendMarkdown c $ pack $ "Looks like the expression is not well formed:\n```\n" <> err <> "```"
-            Right res -> sendMessageRequest c $ pack $ "Here is the expression with parenthesis:\n" <> res
+            Right res ->
+              let rendered = printExpr res
+               in if any isLetter rendered
+                    then sendMessageRequest c (pack $ "Here is the expression with parenthesis:\n" <> printExpr (parenthesize res))
+                    else sendMessageRequest c (pack $ "Here is the evaluated result:\n" <> printExpr res)
       _ <- sendMessageM answer
       pure ()
 handleUpdate u = liftIO $ putStrLn $ "Unhandled message: " <> show u
