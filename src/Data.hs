@@ -1,22 +1,46 @@
 module Data where
 
-data Expr
-  = Plus Expr Expr
-  | Minus Expr Expr
-  | Mult Expr Expr
-  | Div Expr Expr
-  | Parens Expr
+import Recursion (Fix (..), cata)
+
+data ExprF f
+  = Plus f f
+  | Minus f f
+  | Mult f f
+  | Div f f
+  | Parens f
   | Var String
   | Constant Int
-  | Negation Expr
-  deriving stock (Show, Eq)
+  | Negation f
+  deriving stock (Show, Eq, Functor)
+
+type Expr = Fix ExprF
+
+(...) :: (c -> d) -> (a -> b -> c) -> a -> b -> d
+(...) = (.) . (.)
+
+plus, minus, mult, division :: Expr -> Expr -> Expr
+plus = In ... Plus
+minus = In ... Minus
+mult = In ... Mult
+division = In ... Div
+
+parens, negation :: Expr -> Expr
+parens = In . Parens
+negation = In . Negation
+
+constant :: Int -> Expr
+constant = In . Constant
+
+var :: String -> Expr
+var = In . Var
 
 printExpr :: Expr -> String
-printExpr (Constant n) = show n
-printExpr (Var v) = v
-printExpr (Parens x) = "(" <> printExpr x <> ")"
-printExpr (Plus a b) = printExpr a <> " + " <> printExpr b
-printExpr (Minus a b) = printExpr a <> " - " <> printExpr b
-printExpr (Mult a b) = printExpr a <> " * " <> printExpr b
-printExpr (Div a b) = printExpr a <> " / " <> printExpr b
-printExpr (Negation x) = "-" <> printExpr x
+printExpr = cata \case
+  Constant n -> show n
+  Var v -> v
+  Parens x -> "(" <> x <> ")"
+  Plus a b -> a <> " + " <> b
+  Minus a b -> a <> " - " <> b
+  Mult a b -> a <> " * " <> b
+  Div a b -> a <> " / " <> b
+  Negation x -> "-" <> x

@@ -2,14 +2,16 @@ module Lib (runParenthesizer) where
 
 import Data
 import Parser (parseExpr)
+import Recursion (Fix (..), cata)
 
 runParenthesizer :: String -> Either String String
 runParenthesizer = fmap (printExpr . parenthesize) . parseExpr
 
 parenthesize :: Expr -> Expr
-parenthesize (Plus a b) = Parens $ Plus (parenthesize a) (parenthesize b)
-parenthesize (Minus a b) = Parens $ Minus (parenthesize a) (parenthesize b)
-parenthesize (Mult a b) = Parens $ Mult (parenthesize a) (parenthesize b)
-parenthesize (Div a b) = Parens $ Div (parenthesize a) (parenthesize b)
-parenthesize (Negation x) = Parens $ Negation $ parenthesize x
-parenthesize x = x
+parenthesize = cata \case
+  Plus a b -> parens $ plus a b
+  Minus a b -> parens $ minus a b
+  Mult a b -> parens $ mult a b
+  Div a b -> parens $ division a b
+  Negation x -> parens $ negation x
+  x -> In x

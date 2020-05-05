@@ -11,47 +11,47 @@ import qualified Text.Megaparsec.Char.Lexer as L
 type Parser = Parsec Void String
 
 parseExpr :: String -> Either String Expr
-parseExpr = mapLeft errorBundlePretty . runParser (expr <* eof) ""
+parseExpr = mapLeft errorBundlePretty . runParser (pExpr <* eof) ""
   where
     mapLeft _ (Right x) = Right x
     mapLeft f (Left x) = Left $ f x
 
-expr :: Parser Expr
-expr = makeExprParser term operatorTable
+pExpr :: Parser Expr
+pExpr = makeExprParser pTerm operatorTable
 
 operatorTable :: [[Operator Parser Expr]]
 operatorTable =
-  [ [ prefix "-" Negation,
-      prefix "+" id
+  [ [ pPrefix "-" negation,
+      pPrefix "+" id
     ],
-    [ binary "*" Mult,
-      binary "/" Div
+    [ pBinary "*" mult,
+      pBinary "/" division
     ],
-    [ binary "+" Plus,
-      binary "-" Minus
+    [ pBinary "+" plus,
+      pBinary "-" minus
     ]
   ]
 
-binary :: String -> (Expr -> Expr -> Expr) -> Operator Parser Expr
-binary name f = InfixL (f <$ symbol name)
+pBinary :: String -> (Expr -> Expr -> Expr) -> Operator Parser Expr
+pBinary name f = InfixL (f <$ symbol name)
 
-prefix :: String -> (Expr -> Expr) -> Operator Parser Expr
-prefix name f = Prefix (f <$ symbol name)
+pPrefix :: String -> (Expr -> Expr) -> Operator Parser Expr
+pPrefix name f = Prefix (f <$ symbol name)
 
-term :: Parser Expr
-term = constant <|> variable <|> parens expr
+pTerm :: Parser Expr
+pTerm = pConstant <|> pVariable <|> pParens pExpr
 
-constant :: Parser Expr
-constant = Constant <$> number <?> "constant"
+pConstant :: Parser Expr
+pConstant = constant <$> number <?> "constant"
 
-variable :: Parser Expr
-variable = fmap Var . label "variable" . lexeme $ do
+pVariable :: Parser Expr
+pVariable = fmap var . label "variable" . lexeme $ do
   c <- letterChar
   r <- many alphaNumChar
   pure $ c : r
 
-parens :: Parser Expr -> Parser Expr
-parens = fmap Parens . between (symbol "(") (symbol ")")
+pParens :: Parser Expr -> Parser Expr
+pParens = fmap parens . between (symbol "(") (symbol ")")
 
 lexeme :: Parser a -> Parser a
 lexeme = L.lexeme sc

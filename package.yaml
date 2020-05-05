@@ -43,8 +43,11 @@ default-extensions:
     - DeriveAnyClass
     - DeriveGeneric
     - DerivingStrategies
+    - DeriveFunctor
     - DuplicateRecordFields
     - NamedFieldPuns
     - OverloadedLists
     - OverloadedStrings
     - TemplateHaskell
+    - BlockArguments
+    - LambdaCase
