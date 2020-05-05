@@ -11,9 +11,23 @@ packages:
       sha256: 92ef0734578678e855b4106d9c16fa3f1ce60716d14b57e55b7452ab0bd1cdec
   original:
     hackage: aws-lambda-haskell-runtime-2.0.1
+- completed:
+    cabal-file:
+      size: 3991
+      sha256: 449f10368e6233f708cd85cfd6b7265a694d5f7ac8314427cb6f88296995aae6
+    name: telegram-api
+    version: 0.7.1.0
+    git: https://github.com/klappvisor/haskell-telegram-api.git
+    pantry-tree:
+      size: 2905
+      sha256: 2a3b19f00bdddea3c0aa00abe89b596c20f83c4b006f3f6bfd82fc3f8d9b69de
+    commit: abbfd76c40f2783c113b660184a03cc94d58e751
+  original:
+    git: https://github.com/klappvisor/haskell-telegram-api.git
+    commit: abbfd76c40f2783c113b660184a03cc94d58e751
 snapshots:
 - completed:
-    size: 499461
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/13/25.yaml
-    sha256: aed98969628e20615e96b06083c933c7e3354ae56b08b75e607a26569225d6c0
-  original: lts-13.25
+    size: 524996
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/14/27.yaml
+    sha256: 7ea31a280c56bf36ff591a7397cc384d0dff622e7f9e4225b47d8980f019a0f0
+  original: lts-14.27

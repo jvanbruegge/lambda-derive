@@ -14,6 +14,7 @@ dependencies:
     - aeson
     - megaparsec
     - parser-combinators
+    - telegram-api
 
 library:
     source-dirs: src
