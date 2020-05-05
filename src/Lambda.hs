@@ -39,13 +39,13 @@ handler event context = do
   handler' token manager event context
 
 handler' :: Token -> Manager -> Event -> Context -> IO (Either String Response)
-handler' token manager MkEvent {body, path, httpMethod} context
+handler' token@(Token s) manager MkEvent {body, path, httpMethod} context
   | path == "/derive",
     Just expr <- body,
     httpMethod == "POST" = pure $ case runParenthesizer expr of
     Right s -> Right MkResponse {statusCode = 200, body = s, headers = object []}
     Left e -> Right MkResponse {statusCode = 200, body = e, headers = object []}
-  | path == "/telegram" = putStrLn "Got message from telegram"
+  | path == "/" <> unpack s = putStrLn "Got message from telegram"
     *> case (eitherDecode . fromStrict . encodeUtf8 . pack $ fromMaybe "" body) of
       Left err -> pure $ Right MkResponse {statusCode = 400, body = err, headers = object []}
       Right update -> do
