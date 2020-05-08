@@ -25,6 +25,7 @@ simplify = cata \case
   Minus (In (Constant x)) (In (Constant y)) -> constant $ x - y
   Mult (In (Constant x)) (In (Constant y)) -> constant $ x * y
   Div (In (Constant x)) (In (Constant y)) | y /= 0 -> constant $ x / y
+  Parens e | isSimple e -> e
   Negation (In (Negation x)) -> x
   Power (In (Constant x)) (In (Constant y)) | denominator y == 1 -> constant $ x ^ numerator y
   x -> In x
