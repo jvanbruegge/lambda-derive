@@ -22,6 +22,7 @@ parenthesize = cata \case
 simplify :: Expr -> Expr
 simplify = cata \case
   Plus (In (Constant x)) (In (Constant y)) -> constant $ x + y
+  Minus (In (Constant x)) (In (Constant y)) -> constant $ x - y
   Mult (In (Constant x)) (In (Constant y)) -> constant $ x * y
   Div (In (Constant x)) (In (Constant y)) | y /= 0 -> constant $ x / y
   Negation (In (Negation x)) -> x
